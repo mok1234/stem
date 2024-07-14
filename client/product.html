@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="navigation">
+        <a href="/client/register.html">Register</a>
+        <a href="/client/Delete.html">Delete</a>
+        <a class="" href="/client/pay.html">Pay</a>
+        <a class="enabled" href="/client/product.html">Product</a>
+    </div>
+    <h1>Product</h1>
+    <div>
+        <input type="text" name="" id="Name" placeholder="Product Name">
+        <input type="number" 
+        id="Price" 
+        name="marks"
+        min="0"
+        placeholder="0"> 
+        <input type="file" onchange="changeimage()"id="inputimg" name="avatar" accept="image/png, image/jpeg" />
+        <button onclick="upload()">Submit</button>
+        <br>
+        <img src="" id="img" alt="">
+        <h1 id="output"></h1>
+    </div>
+    <div class="product" id="product">
+        
+    </div>
+    
+    <script src="product.js"></script>
+</body>
+</html>

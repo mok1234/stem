@@ -1,0 +1,40 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.navigation{
+    display: flex;
+    text-align:center;
+    height: 50px;
+    background-color: pink;
+}
+a{
+    text-decoration: none;
+    font-size: large;
+    padding: 15px;
+    color: black;
+}
+img{
+    width: 150px;
+    height: 150px;
+    padding: 10px;
+    object-fit: contain;
+}
+.product{
+    display: flex;
+    padding-top: 10px;
+}
+.selected{
+    display: flex;
+    padding-top: 10px;
+}
+.enabled{
+    color: white;
+}
+a:hover{
+    color: white;
+}
+input{
+    padding: 10px;
+}
