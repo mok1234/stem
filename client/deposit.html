@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit money</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="navigation">
+        <a href="/client/register.html">Register</a>
+        <a href="/client/Delete.html">Delete</a>
+        <a href="/client/pay.html">Pay</a>
+        <a href="/client/product.html">Product</a>
+        <a href="/client/update.html">UpdateCard</a>
+        <a href="/client/check.html">CheckData</a>
+        <a href="/client/attendance.html">Attendance</a>
+        <a href="/client/deposit.html" class="enabled">Deposit</a>
+    </div>
+    <div>
+        <h1>Deposit</h1>
+        <input type="text" name="StudentID" id="StudentID" placeholder="StudentID" onchange="changeimg()">
+        <input type="text" name="money" id="money" placeholder="money">
+        <input type="text" name="credit" id="credit" placeholder="credit">
+        <button onclick="deposit()">Submit</button>
+        <br>
+        <img src="" id="img" alt="">
+        <h1 id="output"></h1>
+    </div>
+    
+    
+    <script src="deposit.js"></script>
+</body>
+</html>

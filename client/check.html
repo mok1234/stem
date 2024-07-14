@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>check data</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="navigation">
+        <a href="/client/register.html">Register</a>
+        <a href="/client/Delete.html">Delete</a>
+        <a href="/client/pay.html">Pay</a>
+        <a href="/client/product.html">Product</a>
+        <a href="/client/update.html">UpdateCard</a>
+        <a class="enabled"href="/client/check.html">CheckData</a>
+        <a href="/client/attendance.html">Attendance</a>
+        <a href="/client/deposit.html">Deposit</a>
+    </div>
+    <div>
+        <h1>Check Data</h1>
+        <input type="password" name="" id="cid" placeholder="CardId" maxlength="10" onchange="check()">
+        <p id = "firstname"></p>
+        <p id = "lastname"></p>
+        <p id = "sid"></p>
+        <p id = "class"></p>
+        <p id = "room"></p>
+        <p>balance</p>
+        <p id = "money"></p>
+        <p id = "credit"></p>
+        <img src="" id = "img" alt="">
+        <h1 id="output"></h1>
+    </div>
+    
+    
+    <script src="check.js"></script>
+</body>
+</html>
