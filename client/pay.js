@@ -3,9 +3,11 @@ const Value = document.getElementById("Value")
 const Output = document.getElementById("output")
 const prod = document.getElementById("product")
 const selected = document.getElementById("selected")
+const simage = document.getElementById("simage")
 var Product = {}
 var cost = 0
 const path = "http://127.0.0.1:5000/product"
+const path2 = "http://127.0.0.1:5000/user"
 function click(val){
     console.log(val)
     cost+=val[1]
@@ -78,13 +80,14 @@ function Load(){
 
 Load()
         
-
-function pay(){
-    let formData = {
-        cardID : CardIdBox.value,
-        Value : cost 
+function Loadimage(){
+    if(CardIdBox.value.length<10){
+        return
     }
-    cost = 0    
+    let formData = {
+        cardId : CardIdBox.value
+    }
+    console.log(CardIdBox.value)
     let request = {
         method : "POST",
         headers: {
@@ -93,7 +96,7 @@ function pay(){
         body : JSON.stringify(formData)
         
     }
-    fetch("http://127.0.0.1:5000/user", request)
+    fetch("http://127.0.0.1:5000/money", request)
         .then(response => {
             // Check if the request was successful
             if (!response.ok) {
@@ -105,12 +108,54 @@ function pay(){
         .then(data => {
             // Handle the data returned from the server
             console.log('Post request response:', data);
-            Output.innerHTML = data.message;
+            img = data.image
+            console.log(data.image)
+            simage.src = path2+'/'+img+".jpeg"
         })
         .catch(error => {
             // Handle any errors that occurred during the fetch
             console.error('There was a problem with the fetch operation:', error);
         });
-        Value.value = "0"
-        CardIdBox.value = ""
+}
+function pay(){
+    if(CardIdBox.value.length <10){
+        alert("insert Valid CardId")
+        return
+    }
+    let formData = {
+        cardID : CardIdBox.value,
+        Value : cost 
+    }
+    let request = {
+        method : "PATCH",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body : JSON.stringify(formData)
+        
+    }
+    fetch("http://127.0.0.1:5000/money", request)
+    .then(response => {
+        // Check if the request was successful
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        // Parse the JSON response
+        return response.json();
+    })
+    .then(data => {
+        // Handle the data returned from the server
+        console.log('Post request response:', data);
+        Output.innerHTML = data.message;
+    })
+    .catch(error => {
+        // Handle any errors that occurred during the fetch
+        console.error('There was a problem with the fetch operation:', error);
+    });
+    cost = 0    
+    simage.src = ""
+    selected.innerHTML = ""
+    Value.value = "0"
+    CardIdBox.value = ""
+    Value.innerHTML ="0"    
 }

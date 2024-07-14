@@ -2,9 +2,15 @@ const Output2 = document.getElementById("output2")
 const studenttorem = document.getElementById("sid")
 const cardtorem = document.getElementById("cid")
 
+
+
 function remove(){
     if(studenttorem.value=="" && cardtorem.value==""){
         alert("insert Something")
+        return
+    }
+    if(cardtorem.value.length!=0 && cardtorem.value.length!=10){
+        alert("Invalid CardId")
         return
     }
     let formData = {

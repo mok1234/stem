@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Card</title>
+    <title>Delete</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,13 +12,17 @@
         <a class="enabled" href="/client/Delete.html">Delete</a>
         <a href="/client/pay.html">Pay</a>
         <a href="/client/product.html">Product</a>
-
+        <a href="/client/update.html">UpdateCard</a>
+        <a href="/client/check.html">CheckData</a>
+        <a href="/client/attendance.html">Attendance</a>
+        <a href="/client/deposit.html">Deposit</a>
     </div>
     <div>
         <h1>Delete</h1>
-        <input type="text" name="" id="cid" placeholder="CardId">
+        <input type="password" name="" id="cid" placeholder="CardId" maxlength="10">
         <input type="text" name="" id="sid" placeholder="StudentId">
         <button onclick="remove()">Submit </button>
+        <p>ใส่ CardId เพื่อยกเลิกบัตร ใส่ StudentId เพื่อยกเลิกบัตรของนักเรียน</p>
         <h1 id="output2"></h1>
     </div>
     

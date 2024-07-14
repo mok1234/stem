@@ -15,21 +15,6 @@ mydb = mysql.connector.connect(
 )
 cursor =mydb.cursor()
 
-# cursor.execute("CREATE TABLE Student (firstname VARCHAR(75),lastname VARCHAR(75),class smallint UNSIGNED,room smallint UNSIGNED,money int,credit int,cardID VARCHAR(15),studentID int PRIMARY KEY)")
-# cursor.execute("CREATE TABLE Card (studentID int,cardID VARCHAR(15) PRIMARY KEY)")
-# cursor.execute("INSERT INTO Student (firstname,lastname,studentID) VALUES (%s,%s,%d)",("สุทิวัส","เดชเดชะสุนันท์",6112))  
-# cursor.execute("INSERT INTO Card (cardID,studentID) VALUES ('1234567890',6112)")  
-# cursor.execute("DELETE FROM Card WHERE studentID = '1234567890';")
-# cursor.execute("SELECT * FROM Student")
-# for i in cursor:
-#   print(i)
-# print(cursor.fetchall()[0][0])
-# print("INSERT INTO Student VALUES ('%s','%s',%d,%d,0,0,'%s',%d);"%("Sutiwat","Dachdachasunun",6,3,'1234567890',6112))
-# cursor.execute("INSERT INTO Student VALUES ('%s','%s',%d,%d,0,0,'%s',%d);"%("Sutiwat","Dachdachasunun",6,3,'1234567890',6112))
-# mydb.commit()
-# cursor.execute("SELECT * FROM Student")
-# for i in cursor:
-#   print(i)
 
 def saveimg(path,file,name):
   p = "C:\\Users\\mokgg\\Desktop\\stem\\image\\"+path;
@@ -42,29 +27,91 @@ def saveimg(path,file,name):
   
 app = Flask(__name__)
 CORS(app)
-@app.route("/user",methods =['POST','PUT','DELETE',"UPDATE"])
+@app.route("/user",methods =['POST','PUT','DELETE',"PATCH"])
 def abc():
   body = request.json
+  print(body)
   if(request.method=="PUT"):
     sid = int(body['studentID'])
     cardid = body['cardID']
     cursor.execute("SELECT * FROM Student WHERE studentID = %d"%(sid))
     op = cursor.fetchall()
+    if(len(op)!=0):
+      return {"message" : "Already Register"}
     cursor.execute("SELECT * FROM Card WHERE cardID = '%s'"%(cardid))
     card = cursor.fetchall()
-    image = saveimg("student",body["image"],body["studentID"])
     if(len(card)==0):
       cursor.execute("INSERT INTO Card VALUES (%d,'%s')"%(sid,cardid))
     else:
       return {"message" : "cardUsed"}
-    if(len(op)==0):
-      cursor.execute("INSERT INTO Student VALUES ('%s','%s',%d,%d,0,0,'%s',%d);"%(body['firstname'],body['lastname'],int(body['class']),int(body['room']),body['cardID'],int(sid)))
-      mydb.commit()
-      return {"message" : "added"}
-    cursor.execute("UPDATE Student SET cardID = '%s' WHERE studentID = %d"%(cardid,sid))
+    cursor.execute("INSERT INTO Student VALUES ('%s','%s',%d,%d,0,0,'%s',%d);"%(body['firstname'],body['lastname'],int(body['class']),int(body['room']),body['cardID'],int(sid)))
+    image = saveimg("student",body["image"],body["studentID"])
     mydb.commit()
     return {"message" : "Update card complete"}
   elif(request.method=="POST"):
+    cursor.execute("SELECT * FROM Card WHERE cardID = %s"%(body["cardID"]))
+    card = cursor.fetchall()
+    print(card)
+    if(len(card)==0):
+      return {"message" : "Card not register"}
+    cursor.execute("SELECT * FROM Student WHERE studentID = %s"%(card[0][0]))
+    student = cursor.fetchall()
+    print(student)
+    if(student[0][6]!=body["cardID"]):
+      return {"message":"Card Have been changed"}
+    return {"data":list(student[0])}
+  elif(request.method=="DELETE"):
+    if(body['cardID']):
+      cursor.execute("DELETE FROM Card Where cardID = '%s'"%body['cardID'])
+    if(body['studentID']):
+      cursor.execute("UPDATE Student SET cardID = NULL WHERE studentID = %d"%(int(body['studentID'])))
+    mydb.commit()
+    return {"message":"Delete Complete"}
+  elif(request.method=="PATCH"):
+    if(body['studentID']):
+      cursor.execute("SELECT * FROM Student WHERE studentID = %s"%(body["studentID"]))
+      op = cursor.fetchall()
+      if(len(op)==0):
+        return {"message" : "Not Register yet"}
+      if(body["firstname"]!=""):
+        cursor.execute("UPDATE Student SET firstname = '%s' WHERE studentID = %d"%(body["firstname"],int(body['studentID'])))
+      if(body["lastname"]!=""):
+        cursor.execute("UPDATE Student SET lastname = '%s' WHERE studentID = %d"%(body["lastname"],int(body['studentID'])))
+      if(body["room"]!=""):
+        cursor.execute("UPDATE Student SET room = '%s' WHERE studentID = %d"%(body["room"],int(body['studentID'])))
+      if(body["class"]!=""):
+        cursor.execute("UPDATE Student SET class = '%s' WHERE studentID = %d"%(body["class"],int(body['studentID'])))
+      if(body["image"]!=""):
+        saveimg("student",body["image"],body["studentID"])
+      mydb.commit();
+      if(body["cardID"]!=""):
+        cursor.execute("SELECT * FROM Card WHERE cardID = '%s'"%(body["cardID"]))
+        card = cursor.fetchall()
+        if(len(card)!=0):
+          return {"message" : "cardUsed"}
+        else:
+          cursor.execute("INSERT INTO Card VALUES (%s,'%s')"%(body["studentID"],body["cardID"]))
+        cursor.execute("UPDATE Card SET studentID = %s WHERE cardID = '%s'"%(body["studentID"],body["cardID"]))
+        cursor.execute("UPDATE Student SET cardID = '%s' WHERE studentID = %d"%(body["cardID"],int(body['studentID'])))
+        mydb.commit()
+      return {"message" : "Update Complete"}
+    else:
+      return {"message" : "Invalid Input"}
+    
+@app.route("/attendance",methods =["POST","PUT"])
+def attendance():
+  body = request.json
+  if(request.method=="POST"):
+    # attendance
+    return
+  elif(request.method =="PUT"):
+    return
+
+
+@app.route("/money",methods =["POST","PUT","PATCH"])
+def pay():
+  body = request.json
+  if(request.method=="PATCH"):
     cardid = body['cardID']
     value = body['Value']
     cursor.execute("SELECT * FROM Card WHERE cardID = '%s'"%(cardid))
@@ -83,17 +130,37 @@ def abc():
     if(credit<0):
       money+=credit
       credit=0
-    cursor.execute("UPDATE Student SET money = %d,credit=%d WHERE studentID = %d"%(money,credit,sid))
+    cursor.execute("UPDATE Student SET money = %d,credit=%d WHERE studentID = %d"%(money,credit,card[0][0]))
     mydb.commit()
     return {"message" : "Pay Complete"}
-  elif(request.method=="DELETE"):
-    if(body['cardID']):
-      cursor.execute("DELETE FROM Card Where cardID = '%s'"%body['cardID'])
-    if(body['studentID']):
-      cursor.execute("UPDATE Student SET cardID = NULL WHERE studentID = %d"%(int(body['studentID'])))
+  elif(request.method =="PUT"):
+    print(type(body))
+    cursor.execute("SELECT money,credit FROM Student WHERE studentID = %s"%(body["studentID"]))
+    student=cursor.fetchall()
+    if(len(student)==0):
+      return {"message" : "This student hasn't register"}
+    money = student[0][0]
+    credit = student[0][1]
+    if("money" in body):
+      money+=int(body["money"])
+    if("credit" in body):
+      credit+=int(body["credit"])
+    cursor.execute("UPDATE Student SET money = %d,credit=%d WHERE studentID = %s"%(money,credit,body["studentID"]))
     mydb.commit()
-    return {"message":"Delete Complete"}
-
+    return {"message" : "Add complete"}
+  elif(request.method =="POST"):
+    cursor.execute("SELECT studentID FROM Card WHERE cardID = '%s'"%body["cardId"])
+    sid = cursor.fetchall()
+    print(sid)
+    if(len(sid)>0):
+      cursor.execute("SELECT cardID FROM Student WHERE studentID = %s"%sid[0][0])
+      rsid = cursor.fetchall()
+      if(rsid[0][0]==body["cardId"]):
+        print(sid)
+        return {"image" : str(sid[0][0])}
+    return {"image":"0"}
+    
+  
 @app.route("/product/<filename>")
 def get_image(filename):
   try:

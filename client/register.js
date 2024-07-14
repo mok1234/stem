@@ -37,8 +37,12 @@ function register(){
         alert("insert StudentId")
         return
     }
-    if(CardIdBox.value==""){
+    if(CardIdBox.value.length<10){
         alert("insert CardId")
+        return
+    }
+    if(CardIdBox.value.length!=0 && CardIdBox.value.length!=10){
+        alert("Invalid CardId")
         return
     }
     const reader = new FileReader();

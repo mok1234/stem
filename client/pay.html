@@ -12,12 +12,18 @@
         <a href="/client/Delete.html">Delete</a>
         <a class="enabled" href="/client/pay.html">Pay</a>
         <a href="/client/product.html">Product</a>
+        <a href="/client/update.html">UpdateCard</a>
+        <a href="/client/check.html">CheckData</a>
+        <a href="/client/Attendance.html">Attendance</a>
+        <a href="/client/deposit.html">Deposit</a>
     </div>
     <h1>Pay</h1>
     <div>
-        <input type="text" name="" id="CardId" placeholder="CardId">
+        <input type="password" name="" id="CardId" placeholder="CardId" maxlength="10" onchange="Loadimage()">
         <h1 id ="Value">0</h1>
         <button onclick="pay()">Submit</button>
+        <br>
+        <img src="" alt="" id = "simage">
         <h1 id="output"></h1>
     </div>
     <h1>Product</h1>
