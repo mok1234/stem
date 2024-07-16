@@ -1,8 +1,6 @@
 const cardID = document.getElementById("cid")
 const firstname = document.getElementById("firstname")
-const lastname = document.getElementById("lastname")
 const classes = document.getElementById("class")
-const room = document.getElementById("room")
 const money = document.getElementById("money")
 const credit = document.getElementById("credit")
 const sid = document.getElementById("sid")
@@ -10,13 +8,11 @@ const img = document.getElementById("img")
 const output = document.getElementById("output")
 const path = "http://127.0.0.1:5000/user"
 function check(){
-    firstname.innerHTML = ""
-    lastname.innerHTML = ""
-    classes.innerHTML = ""
-    room.innerHTML = ""
-    money.innerHTML =""
-    credit.innerHTML = ""
-    sid.innerHTML = ""
+    firstname.innerHTML = "Name : "
+    classes.innerHTML = "class : "
+    money.innerHTML ="money : "
+    credit.innerHTML = "credit : "
+    sid.innerHTML = "StudetId : "
     if(cardID.value.length < 10){
         return
     }
@@ -50,15 +46,13 @@ function check(){
             }
             if(data.data){
                 output.innerHTML = ""
-                firstname.innerHTML = data.data[0]
-                lastname.innerHTML =data.data[1]
-                classes.innerHTML = data.data[2]
-                room.innerHTML = data.data[3]
-                money.innerHTML = data.data[4]
-                credit.innerHTML = data.data[5]
+                firstname.innerHTML = "Name : "+data.data[0]+" "+data.data[1]
+                classes.innerHTML = "class : "+data.data[2]+"/"+data.data[3]
+                money.innerHTML = "money : "+data.data[4]
+                credit.innerHTML = "credit : "+data.data[5]
                 console.log(path+"/"+data.data[7]+".jpeg")
                 img.src = path+"/"+data.data[7]+".jpeg"
-                sid.innerHTML = data.data[7]
+                sid.innerHTML = "StudentId : "+data.data[7]
             }
         })
         .catch(error => {

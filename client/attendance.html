@@ -14,17 +14,31 @@
         <a href="/client/product.html">Product</a>
         <a href="/client/update.html">UpdateCard</a>
         <a href="/client/check.html">CheckData</a>
-        <a class = "enabled"href="/client/attendance.html">Attendance</a>
+    <a class = "enabled"href="/client/attendance.html">Attendance</a>
         <a href="/client/deposit.html">Deposit</a>
     </div>
     <div>
         <h1>Attendance</h1>
         <p>date</p>
         <p id="date"></p>
-        <input type="password" name="" id="cid" placeholder="CardId" maxlength="10" onchange="check()">
-        <input type="text" name="studenid" id="sid" placeholder="StudentId">
-        <button onclick="">Submit StudentId</button>
+        <input type="password" name="" id="cid" placeholder="CardId" maxlength="10" onchange="check('cid')">
+        <input type="text" name="studenid" id="ssid" placeholder="StudentId">
+        <button onclick="check('sid')">Submit StudentId</button>
+        <p id = "firstname">Name : </p>
+        <p id = "sid">StudentId : </p>
+        <p id = "class">class : </p>
+        <p>balance</p>
+        <p id = "money">money : </p>
+        <p id = "credit">credit : </p>
+        <img src="" id = "img" alt="">
+        <h1 id="output"></h1>
     </div>
+    <table id = "tab">
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+        </tr>
+      </table>
     
     
     <script src="attendance.js"></script>

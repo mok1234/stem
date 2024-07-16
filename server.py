@@ -4,6 +4,8 @@ import os
 from dotenv import load_dotenv
 from flask_cors import CORS
 import base64
+import datetime
+
 load_dotenv()
 password = os.getenv("PASSWORD")
 user = os.getenv("USER")
@@ -49,6 +51,10 @@ def abc():
     mydb.commit()
     return {"message" : "Update card complete"}
   elif(request.method=="POST"):
+    if("studentID" in body):
+      cursor.execute("SELECT * FROM Student WHERE studentID = %s"%(body["studentID"]))
+      student = cursor.fetchall()
+      return {"data":list(student[0])}
     cursor.execute("SELECT * FROM Card WHERE cardID = %s"%(body["cardID"]))
     card = cursor.fetchall()
     print(card)
@@ -97,15 +103,47 @@ def abc():
       return {"message" : "Update Complete"}
     else:
       return {"message" : "Invalid Input"}
-    
 @app.route("/attendance",methods =["POST","PUT"])
 def attendance():
   body = request.json
-  if(request.method=="POST"):
+  if(request.method=="PUT"):
     # attendance
-    return
-  elif(request.method =="PUT"):
-    return
+    if("studentID" in body):
+      sid = body["studentID"]
+      cursor.execute("SELECT studentID FROM Student WHERE studentID = '%s'"%(body["studentID"]))
+      out = cursor.fetchall()
+      if(len(out)==0):
+        return  {"message" : "card change or not register yet"}
+    else:
+      cursor.execute("SELECT studentID FROM Student WHERE cardID = '%s'"%(body["cardID"]))
+      out = cursor.fetchall()
+      if(len(out)==0):  
+        return  {"message" : "card change or not register yet"}
+      sid = out[0][0]
+    curdate  =datetime.date.today().strftime("%d/%m/%Y")
+    cursor.execute("INSERT INTO attendance VALUES ('%s',%s,'%s')"%(curdate,sid,datetime.datetime.now().strftime("%H:%M:%S")))
+    mydb.commit()
+    cursor.execute("SELECT * FROM attendance WHERE studentID = %s"%(sid))
+    data = cursor.fetchall()
+    return {"message" : "Check Complete"}
+  elif(request.method =="POST"):
+    sid = ""
+    if("studentID" in body):
+      sid = body["studentID"]
+      cursor.execute("SELECT studentID FROM Student WHERE studentID = '%s'"%(body["studentID"]))
+      out = cursor.fetchall()
+      if(len(out)==0):
+        return  {"message" : "card change or not register yet"}
+    else:
+      cursor.execute("SELECT studentID FROM Student WHERE cardID = '%s'"%(body["cardID"]))    
+      out = cursor.fetchall()
+      if(len(out)==0):
+        return  {"message" : "card change or not register yet"}
+      sid = out[0][0]
+    print(sid)
+    cursor.execute("SELECT date,checktime FROM attendance WHERE studentID = %s"%(sid))
+    data = cursor.fetchall()
+    return {"data" : data}
 
 
 @app.route("/money",methods =["POST","PUT","PATCH"])
@@ -149,16 +187,17 @@ def pay():
     mydb.commit()
     return {"message" : "Add complete"}
   elif(request.method =="POST"):
-    cursor.execute("SELECT studentID FROM Card WHERE cardID = '%s'"%body["cardId"])
-    sid = cursor.fetchall()
-    print(sid)
-    if(len(sid)>0):
-      cursor.execute("SELECT cardID FROM Student WHERE studentID = %s"%sid[0][0])
-      rsid = cursor.fetchall()
-      if(rsid[0][0]==body["cardId"]):
-        print(sid)
-        return {"image" : str(sid[0][0])}
-    return {"image":"0"}
+    cursor.execute("SELECT * FROM Card WHERE cardID = %s"%(body["cardID"]))
+    card = cursor.fetchall()
+    print(card)
+    if(len(card)==0):
+      return {"message" : "Card not register"}
+    cursor.execute("SELECT firstname,lastname,class,room,cardID,studentID,money,credit  FROM Student WHERE studentID = %s"%(card[0][0]))
+    student = cursor.fetchall()
+    print(student)
+    if(student[0][4]!=body["cardID"]):
+      return {"message":"Card Have been changed"}
+    return {"data":list(student[0])}
     
   
 @app.route("/product/<filename>")

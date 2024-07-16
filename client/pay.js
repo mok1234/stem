@@ -3,7 +3,12 @@ const Value = document.getElementById("Value")
 const Output = document.getElementById("output")
 const prod = document.getElementById("product")
 const selected = document.getElementById("selected")
+const firstname = document.getElementById("firstname")
+const classes = document.getElementById("class")
+const sid = document.getElementById("sid")
 const simage = document.getElementById("simage")
+const money = document.getElementById("money")
+const credit = document.getElementById("credit")
 var Product = {}
 var cost = 0
 const path = "http://127.0.0.1:5000/product"
@@ -11,18 +16,18 @@ const path2 = "http://127.0.0.1:5000/user"
 function click(val){
     console.log(val)
     cost+=val[1]
-    Value.innerHTML = cost
+    Value.innerHTML = "price : "+cost
     let dv = document.createElement("div")
     let img = document.createElement("img")
     img.src = path+"/"+val[2]+".jpeg"
-    dv.appendChild(img)
+    dv.appendChild(img)     
     let name = document.createElement("p")
     let price = document.createElement("p")
-    name.innerHTML = val[0]
-    price.innerHTML = val[1]
+    name.innerHTML = "Name : "+val[0]
+    price.innerHTML = "price : "+val[1]
     dv.addEventListener("click",()=>{
         cost-=val[1]
-        Value.innerHTML = cost
+        Value.innerHTML ="price : "+ cost
         dv.remove()
     })
     dv.appendChild(img)
@@ -61,8 +66,8 @@ function Load(){
                 dv.appendChild(img)
                 let name = document.createElement("p")
                 let price = document.createElement("p")
-                name.innerHTML = pro[0]
-                price.innerHTML = pro[1]
+                name.innerHTML = "Name : "+pro[0]
+                price.innerHTML = "price : "+pro[1]
                 dv.addEventListener("click",()=>{
                     click(pro)
                 })
@@ -85,8 +90,13 @@ function Loadimage(){
         return
     }
     let formData = {
-        cardId : CardIdBox.value
+        cardID : CardIdBox.value
     }
+    firstname.innerHTML = "Name : "
+    classes.innerHTML = "class : "
+    sid.innerHTML = "StudetId : "
+    money.innerHTML = "money : "
+    credit.innerHTML = "credit : "
     console.log(CardIdBox.value)
     let request = {
         method : "POST",
@@ -108,9 +118,19 @@ function Loadimage(){
         .then(data => {
             // Handle the data returned from the server
             console.log('Post request response:', data);
-            img = data.image
-            console.log(data.image)
-            simage.src = path2+'/'+img+".jpeg"
+            if(data.message){
+                output.innerHTML = data.message
+                return
+            }
+            if(data.data){
+                output.innerHTML = ""
+                firstname.innerHTML = "Name : "+data.data[0]+" "+data.data[1]
+                classes.innerHTML = "class : "+data.data[2]+"/"+data.data[3]
+                simage.src = path2+"/"+data.data[5]+".jpeg"
+                sid.innerHTML = "StudentId : "+data.data[5]
+                money.innerHTML = "money : "+data.data[6]
+                credit.innerHTML = "credit : "+data.data[7]
+            }
         })
         .catch(error => {
             // Handle any errors that occurred during the fetch
@@ -155,7 +175,11 @@ function pay(){
     cost = 0    
     simage.src = ""
     selected.innerHTML = ""
-    Value.value = "0"
     CardIdBox.value = ""
-    Value.innerHTML ="0"    
+    Value.innerHTML ="price : 0"    
+    firstname.innerHTML = "Name : "
+    classes.innerHTML = "class : "
+    sid.innerHTML = "StudetId : "
+    money.innerHTML = "money : "
+    credit.innerHTML = "credit : "
 }
