@@ -7,12 +7,18 @@ const sid = document.getElementById("sid")
 const img = document.getElementById("img")
 const output = document.getElementById("output")
 const path = "http://127.0.0.1:5000/user"
+const tab = document.getElementById("tab")
+const work = document.getElementById("work")
+const deafult2  = work.innerHTML
+const grade = document.getElementById("grade")
+const deafult = tab.innerHTML
 function check(){
     firstname.innerHTML = "Name : "
     classes.innerHTML = "class : "
     money.innerHTML ="money : "
     credit.innerHTML = "credit : "
-    sid.innerHTML = "StudetId : "
+    sid.innerHTML = "StudentId : "
+    work.innerHTML = deafult2
     if(cardID.value.length < 10){
         return
     }
@@ -53,6 +59,38 @@ function check(){
                 console.log(path+"/"+data.data[7]+".jpeg")
                 img.src = path+"/"+data.data[7]+".jpeg"
                 sid.innerHTML = "StudentId : "+data.data[7]
+                grade.innerHTML =""
+                for(let i = 0;i<data.attendance.length;i++){
+                    let tr = document.createElement("tr")
+                    let date = document.createElement("th")
+                    let time = document.createElement("th")
+                    date.innerHTML = data.attendance[i][0]
+                    time.innerHTML = data.attendance[i][1]
+                    tr.appendChild(date)
+                    tr.appendChild(time)
+                    tab.append(tr)
+                }
+                for(let i = 0;i<data.work.length;i++){
+                    let tr = document.createElement("tr")
+                    let name = document.createElement("th")
+                    let deadline = document.createElement("th")
+                    let score = document.createElement("th")
+                    name.innerHTML = data.work[i][0]
+                    deadline.innerHTML = data.work[i][1]
+                    score.innerHTML = data.work[i][2]
+                    tr.appendChild(name)
+                    tr.appendChild(deadline)
+                    tr.appendChild(score)
+                    work.append(tr)
+                }
+                for(let i = 1;i<=12;i++){
+                    if(data.grade[i]){
+                        let p = document.createElement("p")
+                        p.innerHTML = "เกรด ม."+String(Math.floor((i+1)/2))+" เทอม "+ String(1+(i-1)%2)+" : "+String(data.grade[i]) 
+                        grade.appendChild(p)
+                    }
+                }
+                
             }
         })
         .catch(error => {

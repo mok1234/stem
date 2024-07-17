@@ -16,24 +16,41 @@
         <a href="/client/check.html">CheckData</a>
         <a href="/client/Attendance.html">Attendance</a>
         <a href="/client/deposit.html">Deposit</a>
+        <a href="/client/work.html">Work</a>
     </div>
     <div>
         <h1>Update Card</h1>
-        <input type="text" name="" id="firstname" placeholder="firstname">
-        <input type="text" name="" id="lastname" placeholder="lastname">
-        <input type="text" name="" id="class" placeholder="class">
-        <input type="text" name="" id="room" placeholder="room">
         <input type="number" 
         id="StudentId" 
-        placeholder="StudentId">
-        <input type="file" onchange="changeimage()"id="inputimg" name="avatar" accept="image/png, image/jpeg" /> 
-        <input type="password" 
-        id="CardId" 
-        name="marks"
-        maxlength="10"
-        placeholder="CardId">
-        <button onclick="register()">Submit</button>
-        <img src="" id="img" alt="">
+        placeholder="StudentId"
+        onchange="Load()">
+        <div id="div" class="hidden">
+            <input type="text" name="" id="firstname" placeholder="firstname">
+            <input type="text" name="" id="lastname" placeholder="lastname">
+            <input type="number" name="" id="class" placeholder="class">
+            <input type="number" name="" id="room" placeholder="room">
+            <input type="file" onchange="changeimage()"id="inputimg" name="avatar" accept="image/png, image/jpeg" /> 
+            <input type="password" 
+            id="CardId" 
+            name="marks"
+            maxlength="10"
+            placeholder="CardId">
+            <button onclick="register()">Submit</button>
+            <br>
+            <img src="" id="img" alt="">
+            <input type="number" name="" id="G11" placeholder="เกรด ม.1 เทอม1">
+            <input type="number" name="" id="G12" placeholder="เกรด ม.1 เทอม2">
+            <input type="number" name="" id="G21" placeholder="เกรด ม.2 เทอม1">
+            <input type="number" name="" id="G22" placeholder="เกรด ม.2 เทอม2">
+            <input type="number" name="" id="G31" placeholder="เกรด ม.3 เทอม1">
+            <input type="number" name="" id="G32" placeholder="เกรด ม.3 เทอม2">
+            <input type="number" name="" id="G41" placeholder="เกรด ม.4 เทอม1">
+            <input type="number" name="" id="G42" placeholder="เกรด ม.4 เทอม2">
+            <input type="number" name="" id="G51" placeholder="เกรด ม.5 เทอม1">
+            <input type="number" name="" id="G52" placeholder="เกรด ม.5 เทอม2">
+            <input type="number" name="" id="G61" placeholder="เกรด ม.6 เทอม1">
+            <input type="number" name="" id="G62" placeholder="เกรด ม.6 เทอม2">
+        </div>
         <h1 id="output"></h1>
     </div>
     

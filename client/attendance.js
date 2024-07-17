@@ -8,9 +8,12 @@ const img = document.getElementById("img")
 const output = document.getElementById("output")
 const ssid = document.getElementById("ssid")
 const tab = document.getElementById("tab")
+const work = document.getElementById("work")
+const deafult2  = work.innerHTML
 const deafult = tab.innerHTML
 function Load(formData){
     firstname.innerHTML = "Name : "
+    work.innerHTML = deafult2
     classes.innerHTML = "class : "
     money.innerHTML ="money : "
     credit.innerHTML = "credit : "
@@ -26,33 +29,7 @@ function Load(formData){
         body : JSON.stringify(formData)
         
     }
-    fetch("http://127.0.0.1:5000/attendance", request)
-        .then(response => {
-            // Check if the request was successful
-            if (!response.ok) {
-            throw new Error('Network response was not ok');
-            }
-            // Parse the JSON response
-            return response.json();
-        })
-        .then(data => {
-            // Handle the data returned from the server
-            console.log('Post request response:', data);
-            for(let i = 0;i<data.data.length;i++){
-                let tr = document.createElement("tr")
-                let date = document.createElement("th")
-                let time = document.createElement("th")
-                date.innerHTML = data.data[i][0]
-                time.innerHTML = data.data[i][1]
-                tr.appendChild(date)
-                tr.appendChild(time)
-                tab.append(tr)
-            }
-        })
-        .catch(error => {
-            // Handle any errors that occurred during the fetch
-            console.error('There was a problem with the fetch operation:', error);
-        });
+
         fetch("http://127.0.0.1:5000/user", request)
             .then(response => {
                 // Check if the request was successful
@@ -79,6 +56,31 @@ function Load(formData){
                     console.log(path+"/"+data.data[7]+".jpeg")
                     img.src = path+"/"+data.data[7]+".jpeg"
                     sid.innerHTML = "StudentId : "+data.data[7]
+                    if(data.attendance){
+                        for(let i = 0;i<data.attendance.length;i++){
+                            let tr = document.createElement("tr")
+                            let date = document.createElement("th")
+                            let time = document.createElement("th")
+                            date.innerHTML = data.attendance[i][0]
+                            time.innerHTML = data.attendance[i][1]
+                            tr.appendChild(date)
+                            tr.appendChild(time)
+                            tab.append(tr)
+                        }
+                    }
+                    for(let i = 0;i<data.work.length;i++){
+                        let tr = document.createElement("tr")
+                        let name = document.createElement("th")
+                        let deadline = document.createElement("th")
+                        let score = document.createElement("th")
+                        name.innerHTML = data.work[i][0]
+                        deadline.innerHTML = data.work[i][1]
+                        score.innerHTML = data.work[i][2]
+                        tr.appendChild(name)
+                        tr.appendChild(deadline)
+                        tr.appendChild(score)
+                        work.append(tr)
+                    }
                 }
             })
             .catch(error => {

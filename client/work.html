@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>check data</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="navigation">
+        <a href="/client/register.html">Register</a>
+        <a href="/client/Delete.html">Delete</a>
+        <a href="/client/pay.html">Pay</a>
+        <a href="/client/product.html">Product</a>
+        <a href="/client/update.html">UpdateCard</a>
+        <a href="/client/check.html">CheckData</a>
+        <a href="/client/attendance.html">Attendance</a>
+        <a href="/client/deposit.html">Deposit</a>
+        <a href="/client/work.html" class="enabled">Work</a>
+    </div>
+    <div>
+        <h1>Work</h1>
+        <p>ให้เป็นห้อง</p>
+        <input type="number" name="" id="classinp" placeholder="class">
+        <input type="number" name="" id="room" placeholder="room">
+        <button onclick="send('class')">SendToClass</button>
+        <p>ให้เป็นคน</p>
+        <input type="number" name="" id="studentid" placeholder="studentID" onchange="Load()">
+        <button onclick="send('student')">SendToStudent</button>
+        <h2>งานที่ให้</h2>
+        <input type="text" name="" id="workname" placeholder="work name">
+        <input type="number" name="" id="score" placeholder="score">
+        <p>Deadline</p>
+        <input type="date" name="" id="deadline" placeholder="dd-mm-yyyy">
+        <p>งาน</p>
+        <p id = "name">Name : </p>
+        <p id = "sid">StudentId : </p>
+        <p id = "classes">class : </p>
+        <img src="" id = "img" alt="">
+        <br>
+        <table id = 'tab'>
+            <tr>
+                <th>work Name</th>
+                <th>deadline</th>
+                <th>score</th>
+                <th>delete</th>
+            </tr>
+        </table>
+    </div>
+    
+    
+    <script src="work.js"></script>
+</body>
+</html>

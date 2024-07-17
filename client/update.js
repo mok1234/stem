@@ -7,6 +7,15 @@ const CardIdBox = document.getElementById("CardId")
 const Output = document.getElementById("output")
 const inpimg = document.getElementById("inputimg")
 const img = document.getElementById("img")
+const div = document.getElementById("div")
+var G = []
+for(let i = 1;i<=6;i++){
+    G.push([]);
+    for(let j = 1;j<=2;j++){
+        G[i-1].push(document.getElementById("G"+String(i)+String(j)))
+        console.log(G[i-1][j-1])
+    }
+}
 
 function changeimage(){
     if(inpimg.value == ""){
@@ -24,8 +33,13 @@ function send(image){
         room : RoomBox.value,
         studentID : StudentIdBox.value,
         cardID : CardIdBox.value,
-        image:image
+        image:image,
     }
+    for(let i = 1;i<=6;i++){
+        for(let j = 1;j<=2;j++){
+            formData["G"+String(i)+String(j)] = G[i-1][j-1].value
+        }
+    } 
     let request = {
         method : "PATCH",
         headers: {
@@ -74,15 +88,63 @@ function register(){
         else{
             send("")
         }
-        FirstNameBox.value=""
-        LastNameBox.value=""
-        ClassBox.value=""
-        RoomBox.value=""
-        StudentIdBox.value=""
-        CardIdBox.value=""
-        inpimg.value = ""
-        img.src = ""
+        StudentIdBox.value = ""
+        div.className ="hidden"
     }
+function Load(){
+    let formData = {
+        studentID : StudentIdBox.value
+    }
+    let request = {
+        method : "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body : JSON.stringify(formData)
+    }
+    fetch("http://127.0.0.1:5000/user", request)
+        .then(response => {
+            // Check if the request was successful
+            if (!response.ok) {
+            throw new Error('Network response was not ok');
+            }
+            // Parse the JSON response
+            return response.json();
+        })
+        .then(data => {
+            // Handle the data returned from the server
+            console.log('Post request response:', data);
+            if(data.data){
+                let Data = data.data
+                div.className = ""
+                FirstNameBox.value= Data[0]
+                LastNameBox.value=Data[1]
+                ClassBox.value=Data[2]
+                RoomBox.value=Data[3]
+                CardIdBox.value=Data[6]
+                inpimg.value = ""
+                img.src = "http://127.0.0.1:5000/user/"+StudentIdBox.value+".jpeg"
+                if(data.grade){
+                    for(let i = 1;i<=12;i++){
+                        if(data.grade[i]){
+                            G[Math.floor((i-1)/2)][(i-1)%2].value = data.grade[i]
+                        }
+                        else{
+                            G[Math.floor((i-1)/2)][(i-1)%2].value = ""
+                        }
+                    }
+                }
+            }
+            else{
+                Output.innerHTML = data.message
+                div.className = "hidden"
+            }
+        })
+        .catch(error => {
+            // Handle any errors that occurred during the fetch
+            console.error('There was a problem with the fetch operation:', error);
+        });
+}
     
     
 

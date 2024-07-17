@@ -7,6 +7,14 @@ const CardIdBox = document.getElementById("CardId")
 const Output = document.getElementById("output")
 const inpimg = document.getElementById("inputimg")
 const img = document.getElementById("img")
+var G = []
+for(let i = 1;i<=6;i++){
+    G.push([]);
+    for(let j = 1;j<=2;j++){
+        G[i-1].push(document.getElementById("G"+String(i)+String(j)))
+        console.log(G[i-1][j-1])
+    }
+}
 
 function changeimage(){
     if(inpimg.value == ""){
@@ -57,6 +65,12 @@ function register(){
             cardID : CardIdBox.value,
             image:base64string
         }
+        for(let i = 1;i<=6;i++){
+            for(let j = 1;j<=2;j++){
+                formData["G"+String(i)+String(j)] = G[i-1][j-1].value
+                G[i-1][j-1].value = ""
+            }
+        } 
         let request = {
             method : "PUT",
             headers: {
