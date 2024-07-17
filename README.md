@@ -1,2 +1,11 @@
-This project is for my school
-security is not so good but and code is not effective but can use
+# Smart Card
+
+Smart Card
+
+## Installation
+Not Finish but you can clone and
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install requirement.
+
+```bash
+pip install -r requirements.txt
+```
