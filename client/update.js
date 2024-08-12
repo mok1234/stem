@@ -130,7 +130,7 @@ function Load(){
                             G[Math.floor((i-1)/2)][(i-1)%2].value = data.grade[i]
                         }
                         else{
-                            G[Math.floor((i-1)/2)][(i-1)%2].value = ""
+                            G[Math.floor((i-1)/2)][(i-1)%2].value = ""      
                         }
                     }
                 }

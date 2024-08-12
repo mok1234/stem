@@ -71,7 +71,7 @@ function Load(formData){
                     for(let i = 0;i<data.work.length;i++){
                         let tr = document.createElement("tr")
                         let name = document.createElement("th")
-                        let deadline = document.createElement("th")
+                        let deadline = document.createElement("th") 
                         let score = document.createElement("th")
                         name.innerHTML = data.work[i][0]
                         deadline.innerHTML = data.work[i][1]

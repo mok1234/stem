@@ -27,7 +27,7 @@ function del(wid){
     }
     fetch("http://127.0.0.1:5000/work", request)
         .then(response => {
-            // Check if the request was successful
+            // Check if the  request was successful
             if (!response.ok) {
             throw new Error('Network response was not ok');
             }

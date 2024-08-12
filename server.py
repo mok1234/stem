@@ -160,10 +160,9 @@ def abc():
       if(body["cardID"]!=""):
         cursor.execute("SELECT * FROM Card WHERE cardID = '%s'"%(body["cardID"]))
         card = cursor.fetchall()
-        if(len(card)!=0 and int(card[0][0]) != int(body["studentID"])):
+        if(len(card)!=0):
           return {"message" : "cardUsed"}
-        else:
-          cursor.execute("INSERT INTO Card VALUES (%s,'%s')"%(body["studentID"],body["cardID"]))
+        cursor.execute("INSERT INTO Card VALUES (%s,'%s')"%(body["studentID"],body["cardID"]))
         cursor.execute("UPDATE Card SET studentID = %s WHERE cardID = '%s'"%(body["studentID"],body["cardID"]))
         cursor.execute("UPDATE Student SET cardID = '%s' WHERE studentID = %d"%(body["cardID"],int(body['studentID'])))
         mydb.commit()
@@ -184,6 +183,7 @@ def attendance():
     else:
       cursor.execute("SELECT studentID FROM Student WHERE cardID = '%s'"%(body["cardID"]))
       out = cursor.fetchall()
+      print(out)
       if(len(out)==0):  
         return  {"message" : "card change or not register yet"}
       sid = out[0][0]
